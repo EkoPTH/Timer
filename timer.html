@@ -1,0 +1,83 @@
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<div>Hour: <span id="hour"></span></div>
+<div>Minute: <span id="minute"></span></div>
+<div>Second: <span id="seconds"></span></div>
+<div class="timer">
+    <div id="display" style="color:red;">00:00:00</div>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <button id="reset">Reset</button>
+</div>
+<script type="text/javascript">
+window.onload = () => {
+  let hour = 0;
+  let minute = 0;
+  let seconds = 0;
+  let totalSeconds = 0;
+  
+  let intervalId = null;
+  
+  function startTimer() {
+    ++totalSeconds;
+    hour = Math.floor(totalSeconds /3600);
+    minute = Math.floor((totalSeconds - hour*3600)/60);
+    seconds = totalSeconds - (hour*3600 + minute*60);
+
+    document.getElementById("hour").innerHTML =hour;
+    document.getElementById("minute").innerHTML =minute;
+    document.getElementById("seconds").innerHTML =seconds;
+  }
+
+  document.getElementById('start-btn').addEventListener('click', () => {
+    intervalId = setInterval(startTimer, 1000);
+  })
+  
+  document.getElementById('stop-btn').addEventListener('click', () => {
+    if (intervalId)
+      clearInterval(intervalId);
+  });
+  
+   
+  document.getElementById('reset-btn').addEventListener('click', () => {
+     totalSeconds = 0;
+     document.getElementById("hour").innerHTML = '0';
+     document.getElementById("minute").innerHTML = '0';
+     document.getElementById("seconds").innerHTML = '0';
+  });
+}
+</script>
+<script type="text/javascript">
+let timer;
+let seconds = 0;
+
+document.getElementById('start').onclick = function() {
+    clearInterval(timer);
+    timer = setInterval(() => {
+        seconds++;
+        updateDisplay();
+    }, 1000);
+};
+
+document.getElementById('stop').onclick = function() {
+    clearInterval(timer);
+};
+
+document.getElementById('reset').onclick = function() {
+    clearInterval(timer);
+    seconds = 0;
+    updateDisplay();
+};
+
+function updateDisplay() {
+    const hours = String(Math.floor(seconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+    const secs = String(seconds % 60).padStart(2, '0');
+    document.getElementById('display').innerText = `${hours}:${minutes}:${secs}`;
+}
+</script>
+</body>
+</html>
